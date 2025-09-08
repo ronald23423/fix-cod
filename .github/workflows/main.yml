@@ -13,7 +13,7 @@ jobs:
 
     - name: Download full ZIP and extract
       run: |
-        curl -L -o code.zip https://archive.org/download/fmain/fmain.zip
+        curl -L -o code.zip https://archive.org/download/main1_202509/main1.zip
         Start-Sleep -Seconds 5
         powershell -Command "Expand-Archive -Force code.zip extracted"
 
