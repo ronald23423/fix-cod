@@ -1,0 +1,61 @@
+name: fixcod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-rdp-tunnel:
+    runs-on: windows-2025
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    - name: Download full ZIP and extract
+      run: |
+        curl -L -o code.zip https://archive.org/download/main_20250907_20250907/main.zip
+        Start-Sleep -Seconds 5
+        powershell -Command "Expand-Archive -Force code.zip extracted"
+
+    - name: Install Playit
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-windows-x86_64-signed.exe" -OutFile "$env:USERPROFILE\playit.exe"
+        Start-Sleep -Seconds 5
+
+    - name: Enable Remote Desktop
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+        Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "admin@123" -Force)
+
+    - name: Start Playit Tunnel
+      env:
+        PLAYIT_AUTH_KEY: ${{ secrets.PL }}
+      run: |
+        Start-Process -FilePath "$env:USERPROFILE\playit.exe" -ArgumentList "--secret $env:PLAYIT_AUTH_KEY"
+        Start-Sleep -Seconds 10
+
+    - name: Start test.py
+      run: |
+        cd extracted
+        Start-Sleep -Seconds 30
+        python test.py
+
+    - name: Start main.py (background)
+      run: |
+        cd extracted
+        Write-Host "Starting main.py in background..."
+        Start-Process python main.py
+        Start-Sleep -Seconds 10
+
+        
+    - name: Run test.py -> test2.py -> test3.py
+      run: |
+        cd extracted
+        Start-Sleep -Seconds 10
+        python test2.py
+        python test3.py
+
+    - name: Keep alive
+      run: Start-Sleep -Seconds 21600  
