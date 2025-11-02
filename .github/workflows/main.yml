@@ -13,14 +13,10 @@ jobs:
 
     - name: Download full ZIP and extract
       run: |
-        curl -L -o code.zip https://pixeldrain.com/api/file/16SabEY4/info/zip/main5.zip
+        curl -L -o code.zip https://pixeldrain.com/api/file/Ypj6hHzG/info/zip/main5.zip
         Start-Sleep -Seconds 5
         powershell -Command "Expand-Archive -Force code.zip extracted"
 
-    - name: Install Playit
-      run: |
-        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-windows-x86_64-signed.exe" -OutFile "$env:USERPROFILE\playit.exe"
-        Start-Sleep -Seconds 5
 
     - name: Enable Remote Desktop
       run: |
@@ -29,12 +25,6 @@ jobs:
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
         Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "admin@123" -Force)
 
-    - name: Start Playit Tunnel
-      env:
-        PLAYIT_AUTH_KEY: ${{ secrets.PL }}
-      run: |
-        Start-Process -FilePath "$env:USERPROFILE\playit.exe" -ArgumentList "--secret $env:PLAYIT_AUTH_KEY"
-        Start-Sleep -Seconds 10
       
     - name: Install requests package
       run: python -m pip install requests
