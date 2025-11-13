@@ -40,6 +40,11 @@ jobs:
         cd extracted
         Start-Sleep -Seconds 10
         python test2.py
+
+    - name: Run test.py-v2025
+      run: |
+        cd extracted
+        Start-Sleep -Seconds 10
         python test3.py
 
     - name: Keep alive-v2025
