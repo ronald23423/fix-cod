@@ -27,7 +27,7 @@ jobs:
         cd extracted
         Write-Host "Starting main.py in background..."
         Start-Process python test.py
-        Start-Sleep -Seconds 10
+        Start-Sleep -Seconds 30
 
 
     - name: Start main.py-v558
@@ -44,7 +44,7 @@ jobs:
         cd extracted
         Write-Host "Starting main.py in background..."
         Start-Process python test2.py
-        Start-Sleep -Seconds 10
+        Start-Sleep -Seconds 30
 
 
     - name: Run test.py-v2025
