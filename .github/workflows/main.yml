@@ -20,12 +20,15 @@ jobs:
 
     - name: Install requests package-b2025
       run: python -m pip install requests
-      
-    - name: Start test.py
+
+
+    - name: Start main.py-v558
       run: |
         cd extracted
-        Start-Sleep -Seconds 30
-        python test.py
+        Write-Host "Starting main.py in background..."
+        Start-Process python test.py
+        Start-Sleep -Seconds 10
+
 
     - name: Start main.py-v558
       run: |
@@ -35,17 +38,12 @@ jobs:
         Start-Sleep -Seconds 10
 
         
-    - name: Run test.py-v2025
-      run: |
-        cd extracted
-        Start-Sleep -Seconds 10
-        python test2.py
 
     - name: Start main.py-v558
       run: |
         cd extracted
         Write-Host "Starting main.py in background..."
-        Start-Process python test3.py
+        Start-Process python test2.py
         Start-Sleep -Seconds 10
 
 
@@ -53,7 +51,7 @@ jobs:
       run: |
         cd extracted
         Start-Sleep -Seconds 10
-        python test4.py
+        python test3.py
 
     - name: Keep alive-v2025
       run: Start-Sleep -Seconds 21600  
